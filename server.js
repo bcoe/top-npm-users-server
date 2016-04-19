@@ -1,6 +1,6 @@
 /*
-implementation of integration corresponding to
-the following application meta-information:
+this is an example npm Enterprise website integration, the app
+corresponds to the following meta-information:
 
 {
   "type": "badge plus",
@@ -8,8 +8,8 @@ the following application meta-information:
   "name": "npm Top Users",
   "homepage": "http://git.io/npm-top",
   "description": "indicate whether a module was built by a top npm user",
-  "callback": "http://127.0.0.1:5555/auth",
-  "webhook": "http://127.0.0.1:5555/callback"
+  "callback": "http://top-npm-users-server.herokuapp.com/auth",
+  "webhook": "http://top-npm-users-server.herokuapp.com/webhook"
 }
 */
 var bodyParser = require('body-parser')
@@ -29,7 +29,10 @@ app.post('/auth', function (req, res) {
 })
 
 // invoked with a webhook signed with the
-// access_token corresponding to `sender.email`.
+// access_token corresponding to `sender.email`
+// (/auth is invoked first, and you should store
+//  this information so that you can validate
+//  a signature).
 app.post('/webhook', function (req, res) {
   console.log(req.body)
   res.status(200).send('pork chop sandwiches')
