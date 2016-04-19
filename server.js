@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 // and the token should be stored.
 app.post('/auth', function (req, res) {
   console.log(req.body)
-  res.status(200).send('pork chop sandwiches')
+  res.status(200).send('success')
 })
 
 // invoked with a webhook signed with the
@@ -33,9 +33,23 @@ app.post('/auth', function (req, res) {
 // (/auth is invoked first, and you should store
 //  this information so that you can validate
 //  a signature).
+//
+// should respond with an annotation:
+// {
+//   status: 'green',
+//   'status-message': 'module scanned',
+//   description: 'my awesome integration',
+//   'external-link': 'http://example.com/foo-package/audit',
+//   'external-link-text': 'view details'
+// }
 app.post('/webhook', function (req, res) {
   console.log(req.body)
-  res.status(200).send('pork chop sandwiches')
+  res.status(200).send({
+    status: 'green',
+    'status-message': 'phew, user is popular',
+    description: '300/40000 npm users',
+    'external-link': 'http://git.io/npm-top'
+  })
 })
 
 var port = process.env.PORT || 5555
