@@ -48,6 +48,7 @@ app.post('/webhook', function (req, res) {
     status: 'green',
     'status-message': 'phew, user is popular',
     description: '300/40000 npm users',
+    'external-link-text': 'view all',
     'external-link': 'http://git.io/npm-top'
   })
 })
