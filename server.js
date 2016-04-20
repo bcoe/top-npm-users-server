@@ -17,10 +17,14 @@ which was generated, and published to npm using:
 https://www.npmjs.com/package/npmi-cli
 */
 var bodyParser = require('body-parser')
+var crypto = require('crypto')
 var express = require('express')
 var app = express()
+var client = require('redis').createClient(process.env.REDISTOGO_URL || 'redis://127.0.01:6379')
 
-app.use(bodyParser.json())
+app.use(bodyParser.text({
+  type: 'application/json'
+}))
 app.use(bodyParser.urlencoded({extended: false}))
 
 // invoked with an access_token and
@@ -28,8 +32,11 @@ app.use(bodyParser.urlencoded({extended: false}))
 // should be made to validate the email address,
 // and the token should be stored.
 app.post('/auth', function (req, res) {
-  console.log(req.body)
-  res.status(200).send('success')
+  var body = JSON.parse(req.body)
+  client.set(body.email, body.access_token, function (err) {
+    if (err) console.error(err.message)
+    res.status(200).send('success')
+  })
 })
 
 // invoked with a webhook signed with the
@@ -54,7 +61,22 @@ app.post('/auth', function (req, res) {
 //   }]
 // }
 app.post('/webhook', function (req, res) {
-  console.log(req.body)
+  var body = JSON.parse(req.body)
+  // lookup access token.
+  client.get(body.sender.email, function (err, accessToken) {
+    if (err) return res.status(500).send(err.message)
+
+    if (!validateSignature(req.headers['npm-signature'], req.body, accessToken)) {
+      console.info('invalid signature')
+      res.status(401).send('invalid signature')
+    } else {
+      console.info('signature validated')
+      return sendTopUsers (body, req, res)
+    }
+  })
+})
+
+function sendTopUsers (body, req, res) {
   res.status(200).send({
     rows: [
       {
@@ -71,8 +93,22 @@ app.post('/webhook', function (req, res) {
       }
     ]
   })
-})
+}
 
+// the payload is signed with a user's
+// access token.
+function validateSignature (expected, payload, accessToken) {
+  var signature = 'sha256=' + hash(payload, accessToken)
+  return signature === expected
+}
+
+function hash (payload, secret) {
+  return crypto.createHmac('sha256', secret)
+    .update(payload)
+    .digest('hex')
+}
+
+// start the server.
 var port = process.env.PORT || 5555
 var server = app.listen(port, function () {
   console.info('server listening on ', port)
