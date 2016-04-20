@@ -64,7 +64,10 @@ app.post('/webhook', function (req, res) {
         text: '*101* bcoe'
       },
       {
-        text:
+        link: {
+          text: "view leader's board",
+          url: 'http://git.io/npm-top'
+        }
       }
     ]
   })
