@@ -1,5 +1,5 @@
 /*
-this is an example npm Enterprise website integration, the app
+this is an example npm Enterprise website add-on, the app
 corresponds to the following meta-information:
 
 {
@@ -11,6 +11,10 @@ corresponds to the following meta-information:
   "callback": "http://top-npm-users-server.herokuapp.com/auth",
   "webhook": "http://top-npm-users-server.herokuapp.com/webhook"
 }
+
+which was generated, and published to npm using:
+
+https://www.npmjs.com/package/npmi-cli
 */
 var bodyParser = require('body-parser')
 var express = require('express')
@@ -34,22 +38,35 @@ app.post('/auth', function (req, res) {
 //  this information so that you can validate
 //  a signature).
 //
-// should respond with an annotation:
+// should respond with an annotation that looks
+// a little something like this:
 // {
-//   status: 'green',
-//   'status-message': 'module scanned',
-//   description: 'my awesome integration',
-//   'external-link': 'http://example.com/foo-package/audit',
-//   'external-link-text': 'view details'
+//   rows: [{
+//     image: {
+//        url: 'http://www.example.com/img',
+//        text: 'image alt'
+//      },
+//      link: {
+//        url: 'http://www.example.com',
+//        text: 'my awesome link'
+//      },
+//      text: 'hello *world*!'
+//   }]
 // }
 app.post('/webhook', function (req, res) {
   console.log(req.body)
   res.status(200).send({
-    status: 'green',
-    'status-message': 'phew, user is popular',
-    description: '300/40000 npm users',
-    'external-link-text': 'view all',
-    'external-link': 'http://git.io/npm-top'
+    rows: [
+      {
+        text: '*39* bcoe'
+      },
+      {
+        text: '*101* bcoe'
+      },
+      {
+        text:
+      }
+    ]
   })
 })
 
