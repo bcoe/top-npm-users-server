@@ -17,8 +17,8 @@ module.exports = function (body, req, res) {
   request.get({
     url: 'https://registry.npmjs.org/' + body.package,
     json: true
-  }, function (err, res, body) {
-    if (res && res.statusCode >= 400) Error('unexpected response = ' + res.statusCode)
+  }, function (err, _res, body) {
+    if (res && _res.statusCode >= 400) Error('unexpected response = ' + _res.statusCode)
     if (err) {
       console.error(err.message)
       res.status(500).send(err.message)
