@@ -27,7 +27,7 @@ module.exports = function (body, req, res) {
       addContributors(rows, body)
       rows.push({
         link: {
-          text: "view leader's board",
+          text: "view leaders board",
           url: 'http://git.io/npm-top'
         }
       })
