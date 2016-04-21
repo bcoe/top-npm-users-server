@@ -21,6 +21,7 @@ var crypto = require('crypto')
 var express = require('express')
 var app = express()
 var client = require('redis').createClient(process.env.REDISTOGO_URL || 'redis://127.0.01:6379')
+var topUsers = require('./top-users')
 
 app.use(bodyParser.text({
   type: 'application/json'
@@ -71,29 +72,10 @@ app.post('/webhook', function (req, res) {
       res.status(401).send('invalid signature')
     } else {
       console.info('signature validated')
-      return sendTopUsers (body, req, res)
+      return topUsers (body, req, res)
     }
   })
 })
-
-function sendTopUsers (body, req, res) {
-  res.status(200).send({
-    rows: [
-      {
-        text: '*39* bcoe'
-      },
-      {
-        text: '*101* bcoe'
-      },
-      {
-        link: {
-          text: "view leader's board",
-          url: 'http://git.io/npm-top'
-        }
-      }
-    ]
-  })
-}
 
 // the payload is signed with a user's
 // access token.
