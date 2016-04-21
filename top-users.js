@@ -47,7 +47,7 @@ function addContributors (rows, body) {
     })
   })
   maintainers.sort(function (a, b) {
-    return b.rank - a.rank
+    return a.rank - b.rank
   })
   maintainers.forEach(function (c) {
     rows.push({
