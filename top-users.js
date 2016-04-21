@@ -51,6 +51,10 @@ function addContributors (rows, body) {
   })
   maintainers.forEach(function (c) {
     rows.push({
+      image: {
+        url: 'http://localhost:8081/static/images/tonicdev.ico',
+        text: 'awesome icon'
+      },
       text: (c.rank === -1 ? '*n/a*' : '*#' + c.rank + '*') + ' ' + c.name
     })
   })
