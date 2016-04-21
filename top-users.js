@@ -31,7 +31,6 @@ module.exports = function (body, req, res) {
           url: 'http://git.io/npm-top'
         }
       })
-      console.log(rows)
       res.status(200).send({
         rows: rows
       })
@@ -40,18 +39,17 @@ module.exports = function (body, req, res) {
 }
 
 function addContributors (rows, body) {
-  console.log(body.contributors)
-  var contributors = body.contributors || []
-  contributors.forEach(function (contributor) {
-    contributor.rank = -1
+  var maintainers = body.maintainers || []
+  maintainers.forEach(function (maintainer) {
+    maintainer.rank = -1
     topUsersArray.forEach(function (user, i) {
-      if (user.name === contributor.name) contributor.rank = (i + 1)
+      if (user.name === contributor.name) maintainer.rank = (i + 1)
     })
   })
-  contributors.sort(function (a, b) {
+  maintainers.sort(function (a, b) {
     return b.rank - a.rank
   })
-  contributors.forEach(function (c) {
+  maintainers.forEach(function (c) {
     rows.push({
       text: (c.rank === -1 ? '*n/a*' : '*#' + c.rank + '*') + ' ' + c.name
     })
