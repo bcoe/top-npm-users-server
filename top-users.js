@@ -43,7 +43,7 @@ function addContributors (rows, body) {
   maintainers.forEach(function (maintainer) {
     maintainer.rank = -1
     topUsersArray.forEach(function (user, i) {
-      if (user.name === contributor.name) maintainer.rank = (i + 1)
+      if (user.name === maintainer.name) maintainer.rank = (i + 1)
     })
   })
   maintainers.sort(function (a, b) {
