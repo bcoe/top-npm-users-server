@@ -12,8 +12,6 @@ corresponds to the following meta-information:
   "webhook": "http://top-npm-users-server.herokuapp.com/webhook"
 }
 
-function () {
-
 which was generated, and published to npm using:
 
 https://www.npmjs.com/package/npmi-cli
@@ -65,6 +63,8 @@ app.post('/auth', function (req, res) {
 // }
 app.post('/webhook', function (req, res) {
   var body = JSON.parse(req.body)
+
+  console.log(req.body)
   // lookup access token.
   client.get(body.sender.email, function (err, accessToken) {
     if (err) return res.status(500).send(err.message)
