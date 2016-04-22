@@ -12,6 +12,8 @@ corresponds to the following meta-information:
   "webhook": "http://top-npm-users-server.herokuapp.com/webhook"
 }
 
+function () {
+
 which was generated, and published to npm using:
 
 https://www.npmjs.com/package/npmi-cli
