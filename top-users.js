@@ -51,10 +51,6 @@ function addContributors (rows, body) {
   })
   maintainers.forEach(function (c) {
     rows.push({
-      image: {
-        url: 'http://localhost:8081/static/images/tonicdev.ico',
-        text: 'awesome icon'
-      },
       link: {
         text: c.name,
         url: 'https://www.npmjs.com/~' + c.name
